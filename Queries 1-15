@@ -1,0 +1,133 @@
+Q1: Table Creation
+Student Table
+CREATE TABLE Student (
+    StudentId     NUMBER(4) PRIMARY KEY,
+    StudentName   VARCHAR2(40),
+    Address1      VARCHAR2(300) NOT NULL,
+    Gender        VARCHAR2(15),
+    Course        VARCHAR2(8)
+);
+
+Course Table
+CREATE TABLE Course (
+    CourseID   NUMBER(2),
+    DeptNo     NUMBER(2) PRIMARY KEY,
+    Dname      VARCHAR2(20),
+    Location   VARCHAR2(10)
+);
+
+Q2: Insert Records
+Insert into Student
+INSERT INTO Student VALUES (7369, 'Suresh', 'Delhi', 'Male', 'MCA');
+INSERT INTO Student VALUES (7777, 'Ramesh', 'Mumbai', 'Male', 'BCA');
+INSERT INTO Student VALUES (2233, 'Sunita', 'Chennai', 'Female', 'MBA');
+INSERT INTO Student VALUES (8899, 'Sneha', 'Pune', 'Female', NULL);
+INSERT INTO Student VALUES (9900, 'Sanjay', 'Kolkata', 'Male', 'MCA');
+
+Insert into Course
+INSERT INTO Course VALUES (1, 10, 'MCA', 'Delhi');
+INSERT INTO Course VALUES (2, 20, 'BCA', 'Mumbai');
+INSERT INTO Course VALUES (3, 30, 'MBA', 'Pune');
+INSERT INTO Course VALUES (4, 40, 'B.Tech', 'Chennai');
+INSERT INTO Course VALUES (5, 50, 'M.Tech', 'Bangalore');
+
+Q3: Queries
+2. List all information about all students
+SELECT * FROM Student;
+
+
+Shows all rows & columns of Student.
+
+3. List all student IDs along with their respective courses
+SELECT StudentId, Course FROM Student;
+
+
+Returns student id + course only.
+
+4. List course names and their corresponding locations
+SELECT Dname, Location FROM Course;
+
+5. List the details of students enrolled in the MCA course
+SELECT * FROM Student WHERE Course = 'MCA';
+
+6. List the names of students whose IDs are 7369, 7777, and 2233
+SELECT StudentName FROM Student
+WHERE StudentId IN (7369, 7777, 2233);
+
+7. List the names of students not belonging to department 10 or 40
+
+(Need JOIN with Course to check DeptNo)
+
+SELECT s.StudentName
+FROM Student s
+JOIN Course c ON s.Course = c.Dname
+WHERE c.DeptNo NOT IN (10, 40);
+
+8. List the names of students who are not assigned any course
+SELECT StudentName FROM Student
+WHERE Course IS NULL;
+
+8 (second part). Names starting with uppercase “S”
+SELECT StudentName FROM Student
+WHERE StudentName LIKE 'S%';
+
+9. Names ending with “s”
+SELECT StudentName FROM Student
+WHERE StudentName LIKE '%s';
+
+10. Examples of Arithmetic Functions
+SELECT 10+5 AS Addition,
+       10-5 AS Subtraction,
+       10*5 AS Multiplication,
+       10/5 AS Division,
+       MOD(10,3) AS Modulus
+FROM dual;
+
+
+dual is a dummy table in Oracle.
+
+11. Student names, course fees, and 10% scholarship
+
+(Assume fees: MCA=40000, BCA=30000, MBA=50000, B.Tech=60000, M.Tech=70000)
+
+SELECT s.StudentName, 
+       CASE s.Course
+            WHEN 'MCA' THEN 40000
+            WHEN 'BCA' THEN 30000
+            WHEN 'MBA' THEN 50000
+            WHEN 'B.Tech' THEN 60000
+            WHEN 'M.Tech' THEN 70000
+       END AS CourseFee,
+       (CASE s.Course
+            WHEN 'MCA' THEN 40000
+            WHEN 'BCA' THEN 30000
+            WHEN 'MBA' THEN 50000
+            WHEN 'B.Tech' THEN 60000
+            WHEN 'M.Tech' THEN 70000
+       END)*0.10 AS Scholarship
+FROM Student s;
+
+12. Student names having “k” as second character
+SELECT StudentName FROM Student
+WHERE StudentName LIKE '_k%';
+
+
+ _ means single character, so "k" is second character.
+
+13. Students not assigned to any department
+
+(Student’s course not in Course table)
+
+SELECT s.StudentName
+FROM Student s
+LEFT JOIN Course c ON s.Course = c.Dname
+WHERE c.DeptNo IS NULL;
+
+14. Student details in ascending order by course
+SELECT * FROM Student
+ORDER BY Course ASC;
+
+15. Count the number of students enrolled in the BCA course
+SELECT COUNT(*) AS BCA_Students
+FROM Student
+WHERE Course = 'BCA';
