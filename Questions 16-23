@@ -1,0 +1,71 @@
+Q16. Count the total number of students in the Student table
+SELECT COUNT(*) AS Total_Students
+FROM Student;
+
+
+COUNT(*) counts all rows in the Student table.
+
+Q17. Create a table with a primary key constraint
+CREATE TABLE Department (
+    DeptId   NUMBER(3) PRIMARY KEY,
+    DeptName VARCHAR2(50)
+);
+
+
+ DeptId is Primary Key → ensures 
+uniqueness + NOT NULL.
+
+Q18. Create a table with all columns having NOT NULL constraints
+CREATE TABLE Faculty (
+    FacultyId   NUMBER(3) NOT NULL,
+    FacultyName VARCHAR2(50) NOT NULL,
+    Subject     VARCHAR2(30) NOT NULL
+);
+
+
+Every column must have a value (no NULL allowed).
+
+Q19. Create a foreign key constraint referencing the Course table
+CREATE TABLE Enrollment (
+    EnrollId   NUMBER(3) PRIMARY KEY,
+    StudentId  NUMBER(4),
+    CourseId   NUMBER(2),
+    CONSTRAINT fk_course FOREIGN KEY (CourseId) REFERENCES Course(CourseID)
+);
+
+
+CourseId in Enrollment references CourseID in Course.
+
+Q20. Create a table with a UNIQUE key constraint on a column
+CREATE TABLE Library (
+    BookId     NUMBER(4) PRIMARY KEY,
+    ISBN       VARCHAR2(20) UNIQUE,
+    Title      VARCHAR2(100)
+);
+
+
+ISBN must be unique, but can accept NULL (unlike primary key).
+ Q21. Display different students from departments 1 and 2
+
+(Join Student–Course tables, filter by DeptNo)
+
+SELECT DISTINCT s.StudentName, c.DeptNo
+FROM Student s
+JOIN Course c ON s.Course = c.Dname
+WHERE c.DeptNo IN (1, 2);
+
+
+ DISTINCT ensures unique student names.
+
+ Q22. Display the list of students ordered by course
+SELECT StudentName, Course
+FROM Student
+ORDER BY Course;
+
+
+ ORDER BY sorts results alphabetically by course.
+
+ Q23. Display an alphabetically sorted list of student names
+SELECT StudentName
+FROM Student
+ORDER BY StudentName ASC;
